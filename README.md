@@ -1,4 +1,3 @@
-
 <b>ZendAdmin</b>
 
 Zend_Admin is built on Zend Framework and provides an easy-to-use interface for managing your data.
@@ -40,9 +39,9 @@ In your apache/config/httpd.conf file place the below lines
 
 <b>WHAT THIS APPLICATION CONSISTS </b>
 
-Contrellers
-Models
-Views
+Contrellers<br/>
+Models<br/>
+Views<br/>
 
 <b>SCREENSHOTS</b>
 
