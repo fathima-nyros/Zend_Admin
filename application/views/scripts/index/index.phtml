@@ -1,0 +1,134 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<script>
+$(document).ready(function(){
+
+    var progress = setInterval(function() {
+    var $bar = $('.bar');
+
+    if ($bar.width()==200) {
+        clearInterval(progress);
+        $('.progress').removeClass('active');
+    } else {
+        $bar.width($bar.width()+40);
+    }
+    $bar.text($bar.width()/4 + "%");
+}, 800);
+
+});
+</script>
+<div class="span9">
+<h1>Site Administrator</h1>
+<hr>
+<ul class="breadcrumb">
+<li>Dashboard</li>
+</ul>
+
+    <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">Dashboard</a></li>
+  
+    </ul>
+    <div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+    <p></p>
+    </div>
+    </div>
+    </div>
+<table class="table table-condensed table-striped">
+<thead>
+<th>Model Name</th>
+<th>Last Used</th>
+<th>Records</th>
+<th>&nbsp;</th>
+</thead>
+<tbody>
+ 	<?php for($i=0;$i<count($this->res);$i++) { 
+			if($this->res[$i]['Tables_in_mystore'] != "history") {
+		?>
+		<tr><td><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails', 'table' => $this->res[$i]['Tables_in_mystore'])); ?>"><?php echo $this->res[$i]['Tables_in_mystore']; ?></a></td>
+			<td><?php 
+			
+			//$today = date();
+			$interval = date_diff(date_create($this->lastused[$i]['Update_time']), date_create() );
+		//	print_r($interval);
+			 if($interval->days == 0)
+				{
+				echo "Today";
+				}
+				else {
+				echo $interval->days." days ago";
+				}
+//echo $interval->format('%R%a days');
+
+ //echo $this->lastused[$i]['Update_time']; ?></td>
+			<?php 	$dashboard = new Application_Model_Dasboard();
+							 $res = $dashboard->getcountrecords($this->res[$i]['Tables_in_mystore']); 
+								//print_r($res);
+								?>
+			<td><div class="animate-width-to label label-success" style="width: <?php echo $res['count']; ?>%;" data-animate-width-to="<?php echo $res['count']; ?>%" data-animate-length="<?php echo $res['count']; ?>"><?php echo $res['count']; ?></div>
+  </td>
+			<td class="links">
+							<ul class="inline" style="list-style:none;">
+							<li style=" display: inline-block;" rel="tooltip" title="List">
+							<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails', 'table' => $this->res[$i]['Tables_in_mystore'])); ?>">
+							<i class="icon-th-list"></i>
+							<span style="display:none">List</span>
+							</a>
+							</li>
+							<li style=" display: inline-block;" rel="tooltip" title="Add new">
+							<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'addnew', 'table' => $this->res[$i]['Tables_in_mystore'])); ?>">
+							<i class="icon-plus"></i>
+							<span style="display:none">Add new</span>
+							</a>
+							</li>
+							<li style=" display: inline-block;" rel="tooltip" title="Export">
+							<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'export', 'table' => $this->res[$i]['Tables_in_mystore'])); ?>">
+							<i class="icon-share"></i>
+							<span style="display:none">Export</span>
+							</a>
+							</li>
+							<li style=" display: inline-block;" rel="tooltip" title="History">
+							<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history', 'table' => $this->res[$i]['Tables_in_mystore'])); ?>">
+							<i class="icon-book"></i>
+							<span style="display:none">History</span>
+							</a>
+							</li>
+							</ul>
+			</td>
+			</tr><?php } } ?>
+</tbody>
+ </table>
+	<div id="block-tables" class="block">
+<div class="content">
+<h2>History</h2>
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+<th class="shrink user">Table Name</th>
+<th class="changes">Created</th>
+<th class="changes">Last Updated</th>
+</tr>
+</thead>
+<tbody>
+<?php for($i=0;$i<count($this->lastused);$i++) { 
+if($this->lastused[$i]['Name'] != "history") {
+?>
+<tr>
+<td><?php echo $this->lastused[$i]['Name']; ?></td>
+<td><?php echo $this->lastused[$i]['Create_time']; ?></td>
+<td><?php echo $this->lastused[$i]['Update_time']; ?></td>
+</tr>
+<?php }
+}
+ ?>
+</tbody>
+</table>
+</div>
+</div>
+	
+</div>
+</body>
+
+<?php echo $this->partial('index/footer.phtml');?>
+</html>

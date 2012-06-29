@@ -1,0 +1,54 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<?php 
+$table_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('table');
+$id_value = Zend_Controller_Front::getInstance()->getRequest()->getParam('id');
+$id_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('id_name');
+?>
+<div class="span9">
+<h1>List of <?php echo $table_name; ?></h1>
+<hr>
+<ul class="breadcrumb">
+<li><a href="/">Dashboard</a></li>
+<span class="divider">/</span>
+<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>"><?php echo $table_name; ?></a></li>
+<span class="divider">/</span>
+<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name,'id' =>$id_value, 'id_name' =>$id_name )); ?>"><?php echo $table_name ." #".$id_value; ?></a></li>
+<span class="divider">/</span>
+<li >Delete</li>
+</ul>
+
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+    <li class="icon index_collection_link" rel="" title="">
+				<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name)); ?>" ><i class="icon-info-sign"></i><span>Show</span></a></li>
+    <li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'edit','table' => $table_name)); ?>">		<i class="icon-pencil"></i><span>Edit</span></a></li>
+				<li class="icon index_collection_link active"><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'delete','table' => $table_name)); ?>">	<i class="icon-remove"></i><span>Delete</span>       </a></li>
+				<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name)); ?>" >	<i class="icon-book"></i><span>History</span></a></li>
+    </ul>
+    <h4>Are you sure you want to delete the data</h4>
+				<ul>
+			
+								<li style="display:block; margin-top:10px">
+								<span class="label"><?php echo $table_name; ?></span>
+								<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name,'id'=>id_value ,'id_name'=>$id_name)); ?>"><?php echo $table_name ." #".$id_value; ?></a>
+								<ul> </ul>
+								</li>
+								</ul>
+<form id="edit_ball_108" class="edit_ball" method="post" action="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'delete','table' => $table_name,'id'=>$id_value ,'id_name'=>$id_name)); ?>" >
+
+<div class="form-actions">
+<button class="btn btn-danger" type="submit" name="_continue" value="yes" data-disable-with="Yes, I'm sure">
+<i class="icon-white icon-ok"></i>
+Yes, I'm sure
+</button>
+<button class="btn" type="submit" name="_continue" value="no" data-disable-with="Cancel">
+<i class="icon-remove"></i>
+Cancel
+</button>
+</div>
+</form>
+</body>
+
+<?php echo $this->partial('index/footer.phtml');?>
+</html>

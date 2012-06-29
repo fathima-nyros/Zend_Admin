@@ -1,0 +1,25 @@
+<?php 			
+	$dash = new Application_Model_Dasboard();
+	$res = $dash->gettables();
+								
+?>
+	  <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list ">
+              <li class="nav-header">Navigation</li>
+             	<?php for($i=0;$i<count($res);$i++) { 
+														if($res[$i]['Tables_in_mystore'] != "history") {
+														?>
+			<!--<li><a href="/dasboard?tb_name=<?php echo $res[$i]['Tables_in_mystore']; ?>"><?php echo $res[$i]['Tables_in_mystore']; ?></a></li>-->
+			<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails', 'table' => $res[$i]['Tables_in_mystore'])); ?>"><?php echo $res[$i]['Tables_in_mystore']; ?></a></li>
+			<?php }  } ?>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+
+	
+	
+		
+		

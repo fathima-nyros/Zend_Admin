@@ -1,0 +1,58 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<?php 
+ include_once ('/testing.php/pagination/db.php'); 
+    //get the function
+    include_once ('/testing.php/pagination/function.php');
+
+    	$page = (int) (!isset($_GET["page"]) ? 1 : $_GET["page"]);
+    	$limit = 10;
+    	$startpoint = ($page * $limit) - $limit;
+   $table_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('table');     
+        //to make pagination
+      $statement = "history where table_name= '".$table_name."'";
+
+?>
+<div class="span9">
+<h1>List of <?php echo $table_name; ?></h1>
+<hr>
+<ul class="breadcrumb">
+<li><a href="/">Dashboard</a></li>
+<span class="divider">/</span>
+<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>"><?php echo $table_name; ?></a></li>
+<span class="divider">/</span>
+<li>History</li>
+</ul>
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+    <li class="icon index_collection_link " rel="" title="">
+							<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>" ><i class="icon-th-list"></i><span>List</span></a></li>
+    <li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'addnew','table' => $table_name)); ?>"><i class="icon-plus"></i><span>Add New</span></a></li>
+				<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'export','table' => $table_name)); ?>"><i class="icon-share"></i><span>Export</span></a></li>
+				<li class="icon index_collection_link active"><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name)); ?>" ><i class="icon-book"></i><span>History</span></a></li>
+    </ul>
+<table id="history" class="table table-striped table-condensed">
+<thead>
+<tr>
+<th>Item</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<?php for($i=0;$i<count($this->histor_details);$i++) { ?>
+<tr>
+<td><?php echo $this->histor_details[$i]['id']; ?></td>
+<td><?php echo $this->histor_details[$i]['detail']; ?></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+				</div>
+			
+				<?php
+	echo pagination($statement,$limit,$page);
+?>
+</div>
+</body>
+<?php echo $this->partial('index/footer.phtml');?>
+</html>

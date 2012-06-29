@@ -1,0 +1,160 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<script>
+jQuery(document).ready(function() {
+jQuery(".select_option").click(function() {
+if($(this).hasClass('icon-chevron-down')) {
+$(this).removeClass('icon-chevron-down');
+$(this).addClass('icon-chevron-up');
+}
+else {
+$(this).removeClass('icon-chevron-up');
+$(this).addClass('icon-chevron-down');
+}
+jQuery(".togg_checkbox").slideToggle();
+});
+jQuery(".options").click(function() {
+jQuery(".control-option").slideToggle();
+if($(this).hasClass('icon-chevron-down')) {
+$(this).removeClass('icon-chevron-down');
+$(this).addClass('icon-chevron-up');
+}
+else {
+$(this).removeClass('icon-chevron-up');
+$(this).addClass('icon-chevron-down');
+}
+});
+});
+</script>
+<?php 
+$table_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('table');
+?>
+<div class="span9">
+<h1>List of <?php echo $table_name; ?></h1>
+<hr>
+<ul class="breadcrumb">
+<li><a href="/">Dashboard</a></li>
+<span class="divider">/</span>
+<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>"><?php echo $table_name; ?></a></li>
+<span class="divider">/</span>
+<li>Export</li>
+</ul>
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+    <li class="icon index_collection_link " rel="" title="">
+							<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>" ><i class="icon-th-list"></i><span>List</span></a></li>
+    <li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'addnew','table' => $table_name)); ?>"><i class="icon-plus"></i><span>Add New</span></a></li>
+				<li class="icon index_collection_link active"><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'export','table' => $table_name)); ?>"><i class="icon-share"></i><span>Export</span></a>     </li>
+				<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name)); ?>" >	<i class="icon-book"></i><span>History</span></a></li>
+			
+    </ul>
+									<form class="form-horizontal denser" method="post" action="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'export','table' => $table_name)); ?>" accept-charset="UTF-8">
+									<input type="hidden" value="true" name="send_data">
+									<fieldset>
+									<legend>
+									<i class="icon-chevron-down select_option"></i>
+									Select fields to export
+									</legend>
+									<div class="controls togg_checkbox">
+									<?php
+									for($i=0;$i<count($this->desc);$i++) { ?>
+									<label class="checkbox" for="schema_only_id">
+									<input id="<?php echo $this->desc[$i]['Field']; ?>" type="checkbox"  name="<?php echo $this->desc[$i]['Field']; ?>" checked="checked">
+									<?php echo $this->desc[$i]['Field']; ?>
+									</label>
+									<?php } ?>
+									</div>
+									<fieldset>
+									<legend>
+									<i class="icon-chevron-down options"></i>
+								Options for Csv
+									</legend>
+									<div class="control-group control-option">
+<label class="control-label" for="csv_options_encoding_to">Encode to</label>
+									<div class="controls">
+																					<select id="csv_options_encoding_to" name="csv_options[encoding_to]">
+																					<option value=""></option>
+																					<option value="UTF-8">UTF-8</option>
+																					<option value="UTF-16LE">UTF-16LE</option>
+																					<option value="UTF-16BE">UTF-16BE</option>
+																					<option value="UTF-32LE">UTF-32LE</option>
+																					<option value="UTF-32BE">UTF-32BE</option>
+																					<option value="UTF-7">UTF-7</option>
+																					<option value="ISO-8859-1">ISO-8859-1</option>
+																					<option value="ISO-8859-15">ISO-8859-15</option>
+																					<option value="IBM-850">IBM-850</option>
+																					<option value="MacRoman">MacRoman</option>
+																					<option value="Windows-1252">Windows-1252</option>
+																					<option value="ISO-8859-3">ISO-8859-3</option>
+																					<option value="IBM-852">IBM-852</option>
+																					<option value="ISO-8859-2">ISO-8859-2</option>
+																					<option value="MacCE">MacCE</option>
+																					<option value="Windows-1250">Windows-1250</option>
+																					<option value="IBM-855">IBM-855</option>
+																					<option value="ISO-8859-5">ISO-8859-5</option>
+																					<option value="ISO-IR-111">ISO-IR-111</option>
+																					<option value="KOI8-R">KOI8-R</option>
+																					<option value="MacCyrillic">MacCyrillic</option>
+																					<option value="Windows-1251">Windows-1251</option>
+																					<option value="CP-866">CP-866</option>
+																					<option value="KOI-U">KOI-U</option>
+																					<option value="MacUkranian">MacUkranian</option>
+																					<option value="GB2312">GB2312</option>
+																					<option value="GBK">GBK</option>
+																					<option value="GB18030">GB18030</option>
+																					<option value="HZ">HZ</option>
+																					<option value="ISO-2022-CN">ISO-2022-CN</option>
+																					<option value="Big5">Big5</option>
+																					<option value="Big5-HKSCS">Big5-HKSCS</option>
+																					<option value="EUC-TW">EUC-TW</option>
+																					<option value="EUC-JP">EUC-JP</option>
+																					<option value="ISO-2022-JP">ISO-2022-JP</option>
+																					<option value="Shift_JIS">Shift_JIS</option>
+																					<option value="EUC-KR">EUC-KR</option>
+																					<option value="UHC">UHC</option>
+																					<option value="JOHAB">JOHAB</option>
+																					<option value="ISO-2022-KR">ISO-2022-KR</option>
+																					</select>
+<p class="help-block">Choose output encoding. Leave empty to let current input encoding untouched: (UTF-8)</p>
+</div>
+</div>
+<div class="control-group control-option">
+<label class="control-label" for="csv_options_skip_header">No header</label>
+<div class="controls">
+<input id="csv_options_skip_header" type="checkbox" value="true" name="csv_options_skip_header">
+<p class="help-block">Do not output a header (no fields description)</p>
+</div>
+</div>
+<div class="control-group control-option">
+<label class="control-label" for="csv_options_generator_col_sep">Column separator</label>
+<div class="controls">
+<select id="csv_options_generator_col_sep" name="csv_options_generator_col_sep">
+<option value=","></option>
+<option value=",">&lt;comma&gt; ','</option>
+<option value=";">&lt;semicolon&gt; ';'</option>
+<option value="' '">&lt;tabs&gt;</option>
+</select>
+<p class="help-block">Leave blank for default (',')</p>
+</div>
+</div>	
+</fieldset>
+									<div class="form-actions">
+									<button class="btn btn-primary" type="submit" name="csv" value="csv">
+									<i class="icon-white icon-ok"></i>
+									Export to csv
+									<input type="hidden" name ="id_values" id="id_values" value="<?php if(isset($_REQUEST['arr'])) { echo $_REQUEST['arr']; } else { echo ''; }?>">
+											<input type="hidden" name ="id_names" id="id_names" value="<?php  if(isset($_REQUEST['idname'])) {  echo $_REQUEST['idname']; } else { echo ''; }?>">
+									</button>
+									<button class="btn btn-info" type="submit" name="json" value="json"> Export to json </button>
+									<button class="btn btn-info" type="submit" name="xml" value="xml"> Export to xml </button>
+									<button class="btn" type="submit" name="_continue">
+									<i class="icon-remove"></i>
+									Cancel
+									</button>
+									</div>
+									</form>	
+			</div>
+</div>
+</body>
+<?php echo $this->partial('index/footer.phtml');?>
+</html>

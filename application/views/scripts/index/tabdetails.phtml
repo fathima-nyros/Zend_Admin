@@ -1,0 +1,212 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<?php 
+$table_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('table');
+?>
+<?php 
+ include_once ('/testing.php/pagination/db.php'); 
+    //get the function
+    include_once ('/testing.php/pagination/function.php');
+
+    	$page = (int) (!isset($_GET["page"]) ? 1 : $_GET["page"]);
+    	$limit = 7;
+    	$startpoint = ($page * $limit) - $limit;
+          //to make pagination
+					
+      $statement = $table_name ;
+						
+?>
+<script>
+				function toggleChecked(status) {
+$(".allcheck").each( function() {
+$(this).attr("checked",status);
+})
+}	
+jQuery(document).ready(function() {
+jQuery(".delete").live('click' , function(){
+var my_label = $(this).parent().parent();
+jQuery(my_label).remove();
+});
+				jQuery(".export_sel").click(function(){	
+						allcheck = $(".allcheck:checked");
+						if(allcheck.length==0){
+							 alert("No Item is selected");
+							 return false;
+						}
+					if(confirm('Are you sure you want to Export the selected Items?')){
+					var id_value = new Array();
+					var i=0;
+					var id_name;
+						var tab_name;
+     		allcheck.each(function(){
+						 details =  $(this).attr("id");
+					  var fields = details.split(/###/);
+							 id_name = fields[0];
+							 id_value[i]= fields[1];
+							 tab_name = "<?php echo $table_name; ?>";
+	      i++;
+							});
+							document.location.href="http://localhost/index/export/table/<?php echo $table_name; ?>?type=export&tab_name="+tab_name+"&arr="+id_value+"&idname="+id_name;
+			}
+			});
+	jQuery(".remove_sel").click(function(){
+			allcheck = $(".allcheck:checked");
+			if(allcheck.length==0){
+				alert("No Item is selected");
+				return false;
+	}
+	if(confirm('Are you sure you want to delete the selected Items?')){
+		var xx=0;
+		var yy=0;
+		allcheck.each(function(){
+		yy++;
+	 details =  $(this).attr("id");
+		var fields = details.split(/###/);
+		var id_name = fields[0];
+		var id_value = fields[1];
+  var tab_name = "<?php echo $table_name; ?>";
+		jQuery.ajax({type: "POST",
+					url: "/index/delete",
+					data:"type=delete&tab_name="+tab_name+"&id_name="+id_name+"&id="+id_value,
+					success: function(dd){
+	  		if(dd==1){
+			  												document.location.href="http://localhost/index/tabdetails/table/<?php echo $table_name; ?>";
+					  									}
+					else {
+										    alert("The selected Item are not deleted.Please try again");
+							     }
+										}
+					});	
+		});
+			}
+	});
+jQuery(".filter_list").click(function(){
+				var id_val = this.id;
+				$('#filters_box').append("<p class='filter form-search "+id_val+"'><span class='label label-info form-label'><a class='delete'  href='javascript://'><i class='icon-trash icon-white'></i></a>"+id_val+"</span>&nbsp;&nbsp;&nbsp;<input class='additional-fieldset input-small' type='text' value='' name='"+id_val+"' style='display:inline-block;'></p>");
+				});
+});
+</script>
+<div class="span9">
+<h1>List of <?php echo $table_name; ?></h1>
+<hr>
+<?php if(isset($_REQUEST['add']) && $_REQUEST['add']=="succ") { ?>
+<div class="alert alert-success">
+ Your Data has been added successfully 
+</div>
+<?php } ?>
+<?php if(isset($_REQUEST['add']) && $_REQUEST['add']=="cancel") { ?>
+<div class="alert alert-info">
+You have cancalled the functionality
+</div>
+<?php } ?>
+<ul class="breadcrumb">
+<li><a href="/">Dashboard</a></li>
+<span class="divider">/</span>
+<li><?php echo $table_name; ?></li>
+</ul>
+<div class="tabbable"> 
+   <ul class="nav nav-tabs">
+   <li class="icon index_collection_link active" rel="" title="">
+			<a href="" ><i class="icon-th-list"></i><span>List</span></a></li>
+   <li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'addnew','table' => $table_name)); ?>"><i class="icon-plus"></i><span>Add New</span></a></li>
+			<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'export','table' => $table_name)); ?>"><i class="icon-share"></i><span>Export</span></a></li>
+			<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name)); ?>" ><i class="icon-th-list"></i><span>History</span></a></li>
+			<li class="dropdown" style=" float:right"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Add Filter</a>
+			<ul class="dropdown-menu" style="left:auto; right:0;">
+			<?php for($i=0;$i<count($this->desc);$i++) { ?>
+			<li class="filter_list" id="<?php echo $this->desc[$i]['Field']; ?>"><a href="javascript://"><?php echo $this->desc[$i]['Field']; ?></a></li>
+			<?php } ?>
+			</ul>
+			</li>
+ 		<li class="dropdown" style=" float:right"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Selected Items</a>
+			<ul class="dropdown-menu" style="left:auto; right:0;">
+			<li><a href="javascript://" class="export_sel">Export Selected</a></li>
+			<li><a href="javascript://" class="remove_sel"  >Delete Selected</a></li>
+			</ul>
+			</li>
+   </ul>
+					<div class="well">
+					<form action="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>" method="post" enctype="multipart/form-data">
+					<span id="filters_box">
+					</span>
+	 			<input type="hidden" name="table_name" id="table_name" value="<?php echo $table_name; ?>">
+					<input class="input-small" type="search" placeholder="Filter" name="query">
+					<button class="btn btn-primary" type="submit" data-disable-with="<i class='icon-white icon-refresh'></i> Refresh"><i class="icon-white icon-refresh"></i>
+					Refresh
+					</button>
+					</form>
+					<span style="float:right; margin-top: -50px;">
+					<a class="btn btn-info" href="/index/export/table/<?php echo $table_name; ?>">Export found <?php echo $table_name; ?></a>
+					</span>
+					</div>
+		 		<table class="table">
+					<thead>
+								<th><input type="checkbox" name="all_chk" id="all_chk" class="select_all" onclick="toggleChecked(this.checked)"></th>
+								<?php for($i=0;$i<count($this->desc);$i++) {  ?>
+			 				<th><?php echo $this->desc[$i]['Field']; ?></th>
+				 			<?php } ?>
+								<th>&nbsp;</th>
+								</thead>
+								<tbody>
+											<tr>
+															<?php $id_val=""; $id_key=""; 
+													//		print_r($this->res_data);
+													//exit;
+												 for($i=0;$i<count($this->res_data);$i++) { ?>
+														<td><input type="checkbox" name="single_chk" id="<?php 		for($j=0;$j<count($this->desc);$j++){
+																	if($this->desc[$j]['Extra'] =="auto_increment") {
+										  									$id_key = $this->desc[$j]['Field'];
+					     											$id_val= $this->res_data[$i][$this->desc[$j]['Field']]; echo $id_key."###".$id_val; } } ?>" class="allcheck"></td> 
+																<?php
+													for($j=0;$j<count($this->desc);$j++){
+																	if($this->desc[$j]['Extra'] =="auto_increment") {
+										  									$id_key = $this->desc[$j]['Field'];
+					     											$id_val= $this->res_data[$i][$this->desc[$j]['Field']];
+																		}?> <?php 
+														?>		
+																	<td class="get_det" id="<?php  echo $id_key."###".$id_val; ?>"><a href=""><?php echo $this->res_data[$i][$this->desc[$j]['Field']]; ?></a></td>
+																				<?php
+												} ?>	
+																	<td class="links">
+																				<ul class="inline" style="list-style:none;">
+																				<li style=" display: inline-block;" rel="tooltip" title="Show">
+																				<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name,'id' => $id_val,'id_name' => $id_key)); ?>">
+												     			<i class="icon-info-sign"></i>
+																				<span style="display:none">Show</span>
+																				</a>
+																				</li>
+																				<li style=" display: inline-block;" rel="tooltip" title="Edit">
+																				<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'edit','table' => $table_name,'id' => $id_val,'id_name' => $id_key)); ?>">
+																				<i class="icon-pencil"></i>
+																				<span style="display:none">Edit</span>
+																				</a>
+																				</li>
+																									<li style=" display: inline-block;" rel="tooltip" title="Delete">
+																								<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'delete','table' => $table_name,'id' => $id_val,'id_name' => $id_key)); ?>">
+																								<i class="icon-remove"></i>
+																								<span style="display:none">Delete</span>
+																								</a>
+																								</li>
+																								<li style=" display: inline-block;" rel="tooltip" title="History">
+																								<a  href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name,'id' => $id_val,'id_name' => $id_key)); ?>">
+																								<i class="icon-book"></i>
+																								<span style="display:none">History</span>
+																								</a>
+																								</li>
+																								</ul>
+																				</td>
+																				</tr>
+																				<?php } ?>
+																	</tbody>
+															</table>
+									</div>
+					
+						<?php
+								if(count($this->res_data) > 6) {			
+	echo pagination($statement,$limit,$page);
+	}
+?>
+</div>
+</body>
+<?php echo $this->partial('index/footer.phtml');?>
+</html>

@@ -1,0 +1,79 @@
+<?php echo $this->partial('index/header.phtml');?>
+<?php echo $this->partial('index/sidebar.phtml');?>
+<?php 
+$table_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('table');
+$id_value = Zend_Controller_Front::getInstance()->getRequest()->getParam('id');
+$id_name = Zend_Controller_Front::getInstance()->getRequest()->getParam('id_name');
+?>
+<div class="span9">
+<h1>List of <?php echo $table_name; ?></h1>
+<hr>
+<?php if(isset($_REQUEST['add']) && $_REQUEST['add']=="succ") { ?>
+<div class="alert alert-success">
+ Your Data has been saved successfully 
+    </div>
+<?php } ?>
+<?php if(isset($_REQUEST['edit']) && $_REQUEST['edit']=="succ") { ?>
+<div class="alert alert-success">
+ Your Data has been saved successfully 
+    </div>
+<?php } ?>
+<ul class="breadcrumb">
+<li><a href="/">Dashboard</a></li>
+<span class="divider">/</span>
+<li><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'tabdetails','table' => $table_name)); ?>"><?php echo $table_name; ?></a></li>
+<span class="divider">/</span>
+<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name,'id' =>$id_value, 'id_name' =>$id_name )); ?>"><?php echo $table_name ." #".$id_value; ?></a></li>
+<span class="divider">/</span>
+<li >Edit</li>
+</ul>
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+    <li class="icon index_collection_link" rel="" title="">
+							<a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'show','table' => $table_name)); ?>" ><i class="icon-info-sign"></i><span>Show</span></a></li>
+    <li class="icon index_collection_link active"><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'edit','table' => $table_name)); ?>">		<i class="icon-pencil"></i><span>Edit</span></a></li>
+				<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'delete','table' => $table_name)); ?>">	<i class="icon-remove"></i><span>Delete</span></a></li>
+				<li ><a href="<?php echo $this->url(array( 'controller' => 'index', 'action' => 'history','table' => $table_name)); ?>" >	<i class="icon-book"></i><span>History</span></a></li>
+    </ul>
+   			<form  class="form-horizontal denser" method="post" enctype="multipart/form-data" action="" accept-charset="UTF-8">
+							<div style="margin:0;padding:0;display:inline">
+							</div>
+							<fieldset>
+							<legend style="display:none">
+							<i class="icon-chevron-down"></i>
+							</legend>
+			  	<?php	foreach($this->result as $key=>$val) {   
+				if($id_value != $val && $id_name!=$key) {
+						?>
+						<div style=" margin-bottom:10px;">
+							<label class="control-label" for="<?php echo $key; ?>"><?php echo $key; ?></label>
+									<div class="controls">
+									<input type="text" name="<?php echo $key; ?>" id="<?php echo $key; ?>" value="<?php echo $val; ?>" required="required">
+					</div>
+					</div>
+																							<?php 
+																							}
+																							} ?>
+										</fieldset>
+								<input type="hidden" name="table_name" value="<?php echo $table_name; ?>" id="table_name">
+								<div class="form-actions">
+								<button class="btn btn-primary" type="submit" name="_save" data-disable-with="Save">
+								<i class="icon-white icon-ok"></i>
+								Save
+								</button>
+								<span class="extra_buttons">
+								<button class="btn btn-info" type="submit" name="_add_another" data-disable-with="Save and add another"> Save and add another </button>
+								<button class="btn btn-info" type="submit" name="_add_edit" data-disable-with="Save and edit"> Save and edit </button>
+								<button class="btn cancel" type="submit" name="_continue" data-disable-with="Cancel">
+								<i class="icon-remove"></i>
+								Cancel
+								</button>
+								</span>
+								</div>
+</form>
+   
+</div>
+</body>
+
+<?php echo $this->partial('index/footer.phtml');?>
+</html>
