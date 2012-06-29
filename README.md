@@ -31,8 +31,8 @@ In your apache/config/httpd.conf file place the below lines
 
  <VirtualHost *:80>
    ServerName Zend Admin App
-   DocumentRoot "your path to the zend_admin/public"     (Ex: C:/xampp/htdocs/zend_admin/public/)
-   <Directory "your path to the zend_admin/public" >
+   DocumentRoot "your path to the zend_Admin/public"     (Ex: C:/xampp/htdocs/zend_Admin/public/)
+   <Directory "your path to the zend_Admin/public" >
    </Directory>
 </VirtualHost>
 
