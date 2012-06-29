@@ -47,3 +47,24 @@ Models
 Views
 
 SCREENSHOTS
+
+ <img style="max-width:100%;" 
+
+src="https://github.com/fathima-nyros/Zend-admin/blob/master/screenshots/zendadmin1.jpg" alt="Zend-admin" 
+
+title="Zend-admin">
+ <img style="max-width:100%;" 
+
+src="https://github.com/fathima-nyros/Zend-admin/blob/master/screenshots/zendadmin2.jpg" alt="Zend-admin" 
+
+title="Zend-admin">
+ <img style="max-width:100%;" 
+
+src="https://github.com/fathima-nyros/Zend-admin/blob/master/screenshots/zendadmin.jpg" alt="Zend-admin" 
+
+title="Zend-admin">
+ <img style="max-width:100%;" 
+
+src="https://github.com/fathima-nyros/Zend-admin/blob/master/screenshots/zendadmin3.jpg" alt="Zend-admin" 
+
+title="Zend-admin">
