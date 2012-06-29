@@ -1,9 +1,8 @@
-/*****************************************        Zend ADMIN APP                  ***************************************************/
 
 
-ABOUT APPLICATION: ZEND ADMIN
+ZendAdmin
 
-Zend admin is a generic database solution, To Manage a database with the options as (Add, Edit, Delete, Export, Seach, history )
+Zend_Admin is built on Zend Framework and provides an easy-to-use interface for managing your data.
 
 
 INSTALLATION
